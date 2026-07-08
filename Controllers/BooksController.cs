@@ -22,25 +22,25 @@ namespace KutuphaneServisi.Controllers
             _categoryService = categoryService;
         }
 
-        // 1. Kitapları Listele + Başlığa ve Kategoriye Göre Filtrele (GET: api/books)
+        // GET: api/books
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks([FromQuery] string? title, [FromQuery] int? categoryId)
         {
             var books = await _bookService.GetAllBooksAsync();
             
-            // Başlığa göre filtreleme (Eski madde)
+            // Başlığa göre filtreleme
             if (!string.IsNullOrEmpty(title))
             {
                 books = books.Where(b => b.Title.Contains(title, StringComparison.OrdinalIgnoreCase));
             }
 
-            // Kemal abinin istediği Kategori bazlı filtreleme (6. Madde)
+            // Kategoriye göre filtreleme
             if (categoryId.HasValue)
             {
                 books = books.Where(b => b.CategoryId == categoryId.Value);
             }
 
-            // Verileri Kemal abinin istediği DTO formatına dönüştürüyoruz (5. Madde)
+            // Verileri DTO formatına dönüştürme (Mapping)
             var bookDtos = books.Select(b => new BookDto
             {
                 Id = b.Id,
@@ -56,7 +56,7 @@ namespace KutuphaneServisi.Controllers
             return Ok(bookDtos);
         }
 
-        // 2. ID'ye Göre Kitap Getir (GET: api/books/{id})
+        // GET: api/books/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<BookDto>> GetBook(int id)
         {
@@ -83,15 +83,14 @@ namespace KutuphaneServisi.Controllers
             return Ok(bookDto);
         }
 
-        // 3. Yeni Kitap Ekle -> BookCreateDto Kullanarak (POST: api/books)
+        // POST: api/books
         [HttpPost]
         public async Task<ActionResult<BookDto>> PostBook(BookCreateDto bookCreateDto)
         {
-            // Kemal abinin istediği hata kontrolü: Kategori var mı? (4. Madde)
+            // İlişkili kategori kontrolü
             var category = await _categoryService.GetCategoryByIdAsync(bookCreateDto.CategoryId);
             if (category == null)
             {
-                // Kategori yoksa özel exception fırlatıyoruz / badrequest dönüyoruz
                 return BadRequest(new { message = $"Hata: {bookCreateDto.CategoryId} ID'li bir kategori bulunamadı!" });
             }
 
@@ -100,7 +99,6 @@ namespace KutuphaneServisi.Controllers
                 return BadRequest(new { message = "Sayfa sayısı 0 veya daha küçük olamaz." });
             }
 
-            // DTO'dan asıl Model nesnesine eşleme yapıyoruz (Mapping)
             var book = new Book
             {
                 Title = bookCreateDto.Title,
@@ -113,7 +111,6 @@ namespace KutuphaneServisi.Controllers
 
             await _bookService.AddBookAsync(book);
 
-            // Geriye dönen veriyi de yine DTO formatında besliyoruz
             var resultDto = new BookDto
             {
                 Id = book.Id,
@@ -129,7 +126,7 @@ namespace KutuphaneServisi.Controllers
             return CreatedAtAction(nameof(GetBook), new { id = book.Id }, resultDto);
         }
 
-        // 4. Kitap Güncelle (PUT: api/books/{id})
+        // PUT: api/books/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBook(int id, BookCreateDto bookUpdateDto)
         {
@@ -139,7 +136,6 @@ namespace KutuphaneServisi.Controllers
                 return NotFound(new { message = "Güncellenmek istenen kitap bulunamadı." });
             }
 
-            // Kategori kontrolü (4. Madde)
             var category = await _categoryService.GetCategoryByIdAsync(bookUpdateDto.CategoryId);
             if (category == null)
             {
@@ -157,7 +153,7 @@ namespace KutuphaneServisi.Controllers
             return NoContent();
         }
 
-        // 5. Kitap Sil (DELETE: api/books/{id})
+        // DELETE: api/books/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
