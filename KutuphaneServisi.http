@@ -1,0 +1,6 @@
+@KutuphaneServisi_HostAddress = http://localhost:5298
+
+GET {{KutuphaneServisi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
