@@ -3,6 +3,8 @@ using KutuphaneServisi.Models;
 using KutuphaneServisi.Service;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
+using System.Linq;
 
 namespace KutuphaneServisi.Controllers
 {
@@ -17,11 +19,17 @@ namespace KutuphaneServisi.Controllers
             _bookService = bookService;
         }
 
-        // 1. Tüm Kitapları Listele (GET: api/books)
+        // 1. Tüm Kitapları Listele ve Başlığa Göre Filtrele (GET: api/books?title=...)
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooks([FromQuery] string? title)
         {
             var books = await _bookService.GetAllBooksAsync();
+            
+            if (!string.IsNullOrEmpty(title))
+            {
+                books = books.Where(b => b.Title.Contains(title, StringComparison.OrdinalIgnoreCase));
+            }
+            
             return Ok(books);
         }
 

@@ -121,3 +121,6 @@
 /Users/furkansahin/Desktop/KentYazilimStaj/KutuphaneServisi/obj/Debug/net10.0/KutuphaneServisi.genruntimeconfig.cache
 /Users/furkansahin/Desktop/KentYazilimStaj/KutuphaneServisi/obj/Debug/net10.0/ref/KutuphaneServisi.dll
 /Users/furkansahin/Desktop/KentYazilimStaj/KutuphaneServisi/obj/Debug/net10.0/KutuphaneServisi.sourcelink.json
+/Users/furkansahin/Desktop/KentYazilimStaj/KutuphaneServisi/bin/Debug/net10.0/Swashbuckle.AspNetCore.Swagger.dll
+/Users/furkansahin/Desktop/KentYazilimStaj/KutuphaneServisi/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/Users/furkansahin/Desktop/KentYazilimStaj/KutuphaneServisi/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerUI.dll

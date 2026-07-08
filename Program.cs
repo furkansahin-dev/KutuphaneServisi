@@ -16,11 +16,15 @@ builder.Services.AddScoped<BookService>();
 // 3. API ve Controller Desteğinin Eklenmesi
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // 4. İstek Boru Hattı (Pipeline) Ayarları
 if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI();
 {
     app.MapOpenApi();
 }
