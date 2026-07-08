@@ -1,6 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using KutuphaneServisi.Data;
 using KutuphaneServisi.Models;
+using Microsoft.EntityFrameworkCore; // İşte Include için eksik olan kütüphane buydu
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,7 +18,8 @@ namespace KutuphaneServisi.Repository
         // Tüm kitapları listeleme (Read)
         public async Task<IEnumerable<Book>> GetAllAsync()
         {
-            return await _context.Books.ToListAsync();
+            // Kitapları çekerken bağlı olduğu kategori bilgisini de dahil ediyoruz
+            return await _context.Books.Include(b => b.Category).ToListAsync();
         }
 
         // Id'ye göre tek bir kitap getirme (Read)

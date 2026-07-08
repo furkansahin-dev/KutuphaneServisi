@@ -12,6 +12,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // 2. SOLID Katmanlarımızın Tanıtılması
 builder.Services.AddScoped<BookRepository>();
 builder.Services.AddScoped<BookService>();
+builder.Services.AddScoped<CategoryRepository>();
+builder.Services.AddScoped<CategoryService>();
 
 // 3. API ve Controller Desteğinin Eklenmesi
 builder.Services.AddControllers();

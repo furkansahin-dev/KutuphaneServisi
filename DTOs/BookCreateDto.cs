@@ -1,18 +1,14 @@
 using System;
 
-namespace KutuphaneServisi.Models
+namespace KutuphaneServisi.DTOs
 {
-    public class Book
+    public class BookCreateDto
     {
-        public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Author { get; set; } = string.Empty;
         public string Publisher { get; set; } = string.Empty;
         public int PageCount { get; set; }
         public DateTime PublishDate { get; set; }
-
-        // Book-Category İlişki Alanları
         public int CategoryId { get; set; }
-        public Category? Category { get; set; }
     }
 }
