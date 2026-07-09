@@ -39,3 +39,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+// Final control completed.
