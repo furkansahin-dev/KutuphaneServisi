@@ -1,9 +1,11 @@
+using KutuphaneServisi;
 using Microsoft.EntityFrameworkCore;
 using KutuphaneServisi.Data;
 using KutuphaneServisi.Repository;
 using KutuphaneServisi.Service;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // 1. Veri tabanı bağlantısı
 builder.Services.AddDbContext<AppDbContext>(options =>

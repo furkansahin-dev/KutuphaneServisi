@@ -124,3 +124,9 @@
 /Users/furkansahin/Desktop/KentYazilimStaj/KutuphaneServisi/bin/Debug/net10.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/furkansahin/Desktop/KentYazilimStaj/KutuphaneServisi/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/furkansahin/Desktop/KentYazilimStaj/KutuphaneServisi/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/Users/furkansahin/Desktop/KentYazilimStaj/KutuphaneServisi/bin/Debug/net10.0/AutoMapper.dll
+/Users/furkansahin/Desktop/KentYazilimStaj/KutuphaneServisi/bin/Debug/net10.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+/Users/furkansahin/Desktop/KentYazilimStaj/KutuphaneServisi/bin/Debug/net10.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/furkansahin/Desktop/KentYazilimStaj/KutuphaneServisi/bin/Debug/net10.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/furkansahin/Desktop/KentYazilimStaj/KutuphaneServisi/bin/Debug/net10.0/Microsoft.IdentityModel.Logging.dll
+/Users/furkansahin/Desktop/KentYazilimStaj/KutuphaneServisi/bin/Debug/net10.0/Microsoft.IdentityModel.Tokens.dll

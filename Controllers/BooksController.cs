@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
+using AutoMapper; // AutoMapper kütüphanesini ekledik
 
 namespace KutuphaneServisi.Controllers
 {
@@ -15,11 +16,14 @@ namespace KutuphaneServisi.Controllers
     {
         private readonly BookService _bookService;
         private readonly CategoryService _categoryService;
+        private readonly IMapper _mapper; // IMapper tanımı eklendi
 
-        public BooksController(BookService bookService, CategoryService categoryService)
+        // Constructor üzerinden IMapper inject edildi
+        public BooksController(BookService bookService, CategoryService categoryService, IMapper mapper)
         {
             _bookService = bookService;
             _categoryService = categoryService;
+            _mapper = mapper;
         }
 
         // GET: api/books
@@ -40,18 +44,8 @@ namespace KutuphaneServisi.Controllers
                 books = books.Where(b => b.CategoryId == categoryId.Value);
             }
 
-            // Verileri DTO formatına dönüştürme (Mapping)
-            var bookDtos = books.Select(b => new BookDto
-            {
-                Id = b.Id,
-                Title = b.Title,
-                Author = b.Author,
-                Publisher = b.Publisher,
-                PageCount = b.PageCount,
-                PublishDate = b.PublishDate,
-                CategoryId = b.CategoryId,
-                CategoryName = b.Category != null ? b.Category.Name : "Kategori Yok"
-            }).ToList();
+            // AutoMapper ile toplu dönüşüm (Manuel Select temizlendi)
+            var bookDtos = _mapper.Map<List<BookDto>>(books);
             
             return Ok(bookDtos);
         }
@@ -68,17 +62,8 @@ namespace KutuphaneServisi.Controllers
                 return NotFound(new { message = "Kitap bulunamadı." });
             }
 
-            var bookDto = new BookDto
-            {
-                Id = book.Id,
-                Title = book.Title,
-                Author = book.Author,
-                Publisher = book.Publisher,
-                PageCount = book.PageCount,
-                PublishDate = book.PublishDate,
-                CategoryId = book.CategoryId,
-                CategoryName = book.Category != null ? book.Category.Name : "Kategori Yok"
-            };
+            // AutoMapper ile tekil dönüşüm yapıldı
+            var bookDto = _mapper.Map<BookDto>(book);
 
             return Ok(bookDto);
         }
@@ -99,29 +84,14 @@ namespace KutuphaneServisi.Controllers
                 return BadRequest(new { message = "Sayfa sayısı 0 veya daha küçük olamaz." });
             }
 
-            var book = new Book
-            {
-                Title = bookCreateDto.Title,
-                Author = bookCreateDto.Author,
-                Publisher = bookCreateDto.Publisher,
-                PageCount = bookCreateDto.PageCount,
-                PublishDate = bookCreateDto.PublishDate,
-                CategoryId = bookCreateDto.CategoryId
-            };
+            // AutoMapper ile BookCreateDto -> Book dönüşümü yapıldı
+            var book = _mapper.Map<Book>(bookCreateDto);
 
             await _bookService.AddBookAsync(book);
 
-            var resultDto = new BookDto
-            {
-                Id = book.Id,
-                Title = book.Title,
-                Author = book.Author,
-                Publisher = book.Publisher,
-                PageCount = book.PageCount,
-                PublishDate = book.PublishDate,
-                CategoryId = book.CategoryId,
-                CategoryName = category.Name
-            };
+            // Geri dönüş tipi için eşleştirme yapılıyor
+            var resultDto = _mapper.Map<BookDto>(book);
+            resultDto.CategoryName = category.Name; // Kategori adını doğrudan atıyoruz
 
             return CreatedAtAction(nameof(GetBook), new { id = book.Id }, resultDto);
         }
@@ -142,12 +112,8 @@ namespace KutuphaneServisi.Controllers
                 return BadRequest(new { message = $"Hata: {bookUpdateDto.CategoryId} ID'li bir kategori bulunamadı!" });
             }
 
-            existingBook.Title = bookUpdateDto.Title;
-            existingBook.Author = bookUpdateDto.Author;
-            existingBook.Publisher = bookUpdateDto.Publisher;
-            existingBook.PageCount = bookUpdateDto.PageCount;
-            existingBook.PublishDate = bookUpdateDto.PublishDate;
-            existingBook.CategoryId = bookUpdateDto.CategoryId;
+            // Manuel atamalar yerine AutoMapper nesne üzerine eşleme (Map) yapıyor
+            _mapper.Map(bookUpdateDto, existingBook);
 
             await _bookService.UpdateBookAsync(existingBook);
             return NoContent();
