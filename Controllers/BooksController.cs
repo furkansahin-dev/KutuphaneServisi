@@ -12,6 +12,7 @@ namespace KutuphaneServisi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("fixed")]
     public class BooksController : ControllerBase
     {
         private readonly BookService _bookService;
